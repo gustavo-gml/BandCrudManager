@@ -1,0 +1,135 @@
+package model.dao;
+
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
+
+import model.Band;
+import model.Employer;
+import model.LiveHouse;
+import model.ModelException;
+import model.Show;
+
+public class MySQLShowDAO implements ShowDAO {
+	
+	@Override
+	public boolean save(Show s) throws ModelException {
+		
+		DBHandler db = new DBHandler();
+		
+		String sqlInsert = "INSERT INTO shows VALUES "
+				+ " (DEFAULT, ?, ?, ?, ?, ?, ?);";
+		
+		db.prepareStatement(sqlInsert);
+		db.setInt(1, s.getBand().getId());
+		db.setInt(2, s.getEmployer().getId());
+		db.setInt(3, s.getLiveHouse().getId());
+		db.setDouble(4, s.getValorCache()); 
+		db.setLocalDateTime(5, s.getDataHora());
+		db.setInt(6, s.getTempoShow());
+		  
+		return db.executeUpdate() > 0;
+	}
+
+	@Override
+	public boolean update(Show s) throws ModelException {
+		
+		DBHandler db = new DBHandler();
+		
+		String sqlUpdate = "UPDATE shows "
+				         	+ "SET band_id = ?, "
+				         	+ "employer_id = ?, "
+				         	+ "live_house_id = ?, "
+				         	+ "valor_cache = ?, "
+				         	+ "data_hora = ?, "
+				         	+ "tempo_de_show = ? "
+				         + "WHERE id = ?";
+		
+		
+		db.prepareStatement(sqlUpdate);
+		
+		db.setInt(1, s.getBand().getId());
+		db.setInt(2, s.getEmployer().getId());
+		db.setInt(3, s.getLiveHouse().getId());
+		db.setDouble(4, s.getValorCache()); 
+		db.setLocalDateTime(5, s.getDataHora());
+		db.setInt(6, s.getTempoShow());
+		db.setInt(7, s.getId());
+		
+		return db.executeUpdate() > 0;
+	}
+
+	@Override
+	public boolean delete(Show s) throws ModelException {
+		
+		DBHandler db = new DBHandler();
+		
+		String sqlDelete = " DELETE FROM shows "
+		                 + " WHERE id = ?;";
+
+		db.prepareStatement(sqlDelete);		
+		db.setInt(1, s.getId());
+		
+		try {
+			
+			return db.executeUpdate() > 0;
+			
+		} catch (ModelException e) {
+			if (e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+				return false;
+			}
+			
+			throw e; 
+		}
+	}
+
+	@Override
+	public List<Show> listAll() throws ModelException {
+	
+		DBHandler db = new DBHandler();
+		
+		List<Show> shows = new ArrayList<Show>();
+			
+		// Declara um instrução SQL
+		String sqlQuery = "SELECT * FROM shows";
+		
+		db.createStatement();
+	
+		db.executeQuery(sqlQuery);
+
+		while (db.next()) {
+			Show s = createShow(db);
+			shows.add(s);
+		}
+		
+		return shows;
+	}
+
+	@Override
+	public Show findById(int id) throws ModelException {
+		
+		DBHandler db = new DBHandler();
+				
+		String sql = "SELECT * FROM shows WHERE id = ?";
+		
+		db.prepareStatement(sql);
+		db.setInt(1, id);
+		db.executeQuery();
+		
+		Show s = null;
+		while (db.next()) {
+			s = createShow(db);
+			break;
+		}
+		return s;
+	}
+	
+	private Show createShow(DBHandler db) throws ModelException {
+		Band b = new Band(db.getInt("band_id"));
+		Employer e = new Employer (db.getInt("employer_id"));
+		LiveHouse lH = new LiveHouse (db.getInt("live_house_id"));
+		
+		Show lh = new Show(db.getInt("id"), b, e, lH, db.getDouble("valor_cache"), db.getLocalDateTime("data_hora"), db.getInt("tempo_de_show"));
+		return lh;
+	}
+}
