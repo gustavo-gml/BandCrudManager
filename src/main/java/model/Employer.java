@@ -46,5 +46,8 @@ public class Employer {
 		CNPJ = cNPJ;
 	}
 	
-
+	@Override
+	public String toString() {
+		return this.nomeFantasia;
+	}
 }

@@ -14,6 +14,8 @@ public class DAOFactory {
 		listDAOsInterfaces.put(BandDAO.class, new MySQLBandDAO());
 		listDAOsInterfaces.put(AdminDAO.class, new MySQLAdminDAO());
 		listDAOsInterfaces.put(EmployerDAO.class, new MySQLEmployerDAO());
+		listDAOsInterfaces.put(LiveHouseDAO.class, new MySQLLiveHouseDAO());
+		listDAOsInterfaces.put(ShowDAO.class, new MySQLShowDAO());
 	}
 
 	@SuppressWarnings("unchecked")

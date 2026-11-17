@@ -43,6 +43,7 @@
 					<label for="cnpj">CNPJ</label>
 					<input type="text" class="form-control" id="cnpj" name="cnpj" 
 						   placeholder="00.000.000/0000-00" 
+						   maxlength="14"
 						   required 
 						   oninvalid="this.setCustomValidity('Por favor, informe o CNPJ.')"
 						   oninput="setCustomValidity('')" 

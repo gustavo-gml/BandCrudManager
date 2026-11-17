@@ -124,6 +124,8 @@ public class MySQLShowDAO implements ShowDAO {
 		return s;
 	}
 	
+	
+	
 	private Show createShow(DBHandler db) throws ModelException {
 		Band b = new Band(db.getInt("band_id"));
 		Employer e = new Employer (db.getInt("employer_id"));

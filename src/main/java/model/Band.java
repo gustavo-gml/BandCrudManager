@@ -72,7 +72,7 @@ public class Band {
 	
 	@Override
 	public String toString() {
-		return this.getName() +  " - " + this.getMusicGenre();
+		return this.name +  " - " + this.musicGenre;
 	}
 	
 }

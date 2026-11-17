@@ -84,12 +84,12 @@ public class BandsController extends HttpServlet {
 	private Band loadBand(HttpServletRequest req) {
 		String postIdParameter = req.getParameter("bandId");
 		
-		int postId = Integer.parseInt(postIdParameter);
+		int bandId = Integer.parseInt(postIdParameter);
 		
 		BandDAO dao = DAOFactory.createDAO(BandDAO.class);
 		
 		try {
-			Band b = dao.findById(postId);
+			Band b = dao.findById(bandId);
 			
 			if (b == null)
 				throw new ModelException("Banda não encontrada para alteração");

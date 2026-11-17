@@ -16,8 +16,10 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="${pageContext.request.contextPath}"><span class="glyphicon glyphicon-home" /><strong>&nbspInício</strong></a></li>
 				<li><a href="${pageContext.request.contextPath}/admins"><span class="glyphicon glyphicon-user" /><strong>&nbspAdministradores</strong></a></li>
-				<li><a href="${pageContext.request.contextPath}/bands"><span class="glyphicon glyphicon-pencil" /><strong>&nbspBandas</strong></a></li>
-				<li><a href="${pageContext.request.contextPath}/employers"><span class="glyphicon glyphicon-pushpin" /><strong>&nbspContratantes</strong></a></li>
+				<li><a href="${pageContext.request.contextPath}/bands"><span class="glyphicon glyphicon-music"></span><strong>&nbsp;Bandas</strong></a></li>
+				<li><a href="${pageContext.request.contextPath}/employers"><span class="glyphicon glyphicon-briefcase"></span><strong>&nbsp;Contratantes</strong></a></li>
+				<li><a href="${pageContext.request.contextPath}/liveHouses"><span class="glyphicon glyphicon-map-marker"></span><strong>&nbsp;Casas de Show</strong></a></li>
+				<li><a href="${pageContext.request.contextPath}/shows"><span class="glyphicon glyphicon-calendar"></span><strong>&nbsp;Shows</strong></a></li>
 				<li class="dropdown">
 			        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Perfil</strong>
 			        <span class="caret"></span></a>
