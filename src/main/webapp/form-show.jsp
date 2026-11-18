@@ -79,7 +79,7 @@
 				</div>
 				
 				<div class="form-group col-md-4">
-					<label for="tempoShow">Tempo de Show</label>
+					<label for="tempoShow">Tempo de Show (Em minutos)</label>
 					<input type="number" class="form-control" id="tempoShow" name="tempoShow" 
 						   placeholder="Tempo de Show" 
 						   required 

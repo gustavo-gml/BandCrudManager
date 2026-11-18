@@ -87,6 +87,20 @@
 	     	</div>
 		</div>
 		
+		
+			<div id="bottom" class="row">
+	     		<div class="col-md-12">
+			        <ul class="pagination">
+			            <li class="disabled"><a>&lt; Anterior</a></li>
+			            <li class="disabled"><a>1</a></li>
+			            <li><a href="#">2</a></li>
+			            <li><a href="#">3</a></li>
+			            <li class="next"><a href="#" rel="next">Próximo &gt;</a></li>
+			        </ul><!-- /.pagination -->
+			    </div>
+	     	</div>
+	
+		
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/table-utils.js"></script>

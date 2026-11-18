@@ -17,7 +17,7 @@
 		
 	 	 	<div id="top" class="row">
 	 			<div class="col-md-3">
-			        <h3>Live Houses</h3>
+			        <h3>Casas de Show</h3>
 			    </div>
 			 
 			    <div class="col-md-6">
