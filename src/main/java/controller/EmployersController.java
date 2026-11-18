@@ -43,18 +43,7 @@ public class EmployersController extends HttpServlet {
 			break;
 		}
 		case "/crud-manager/employer/update": {
-			String idStr = req.getParameter("employerId");
-			int idEmployer = Integer.parseInt(idStr); 
-			
-			EmployerDAO dao = DAOFactory.createDAO(EmployerDAO.class);
-			
-			Employer employer = null;
-			try {
-				employer = dao.findById(idEmployer);
-			} catch (ModelException e) {
-				e.printStackTrace();
-			}
-			
+			Employer employer = loadEmployer(req);
 			req.setAttribute("action", "update");
 			req.setAttribute("employer", employer);
 			ControllerUtil.forward(req, resp, "/form-employer.jsp");
@@ -189,5 +178,21 @@ public class EmployersController extends HttpServlet {
 			e.printStackTrace();
 			ControllerUtil.errorMessage(req, e.getMessage());
 		}
+	}
+	
+	private Employer loadEmployer(HttpServletRequest req) {
+		String idStr = req.getParameter("employerId");
+		int idEmployer = Integer.parseInt(idStr); 
+		
+		EmployerDAO dao = DAOFactory.createDAO(EmployerDAO.class);
+		
+		Employer employer = null;
+		try {
+			employer = dao.findById(idEmployer);
+		} catch (ModelException e) {
+			e.printStackTrace();
+		}
+		
+		return employer;
 	}
 }

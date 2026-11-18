@@ -189,8 +189,8 @@ public class ShowsController extends HttpServlet{
 	}
 
 	private void deleteShow(HttpServletRequest req, HttpServletResponse resp) {
-	
-		Integer id = Integer.parseInt(req.getParameter("showId"));
+		
+		Integer id = Integer.parseInt(req.getParameter("id"));
 		
 		ShowDAO dao = DAOFactory.createDAO(ShowDAO.class);
 		
@@ -207,7 +207,7 @@ public class ShowsController extends HttpServlet{
 				ControllerUtil.errorMessage(req, "Show '" + s.toString() + "' não pode ser deletado.");
 			}
 		} catch (ModelException e) {
-			// log no servidor
+
 			e.printStackTrace();
 			ControllerUtil.errorMessage(req, e.getMessage());
 		}
@@ -222,7 +222,7 @@ public class ShowsController extends HttpServlet{
 		try {
 			shows = dao.listAll();
 		} catch (ModelException e) {
-			// Log no servidor
+
 			e.printStackTrace();
 		}
 		

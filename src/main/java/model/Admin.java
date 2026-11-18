@@ -55,5 +55,8 @@ public class Admin {
 		this.password = password;
 	}
 	
+	public String toString() {
+		return "Nome: " + this.name;
+	}
 	
 }

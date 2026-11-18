@@ -13,8 +13,9 @@ import model.Admin;
 import model.ModelException;
 import model.dao.AdminDAO;
 import model.dao.DAOFactory;
+import model.utils.PasswordEncryptor;
 
-@WebServlet(urlPatterns = {"/admins", "/admins/form", "/admins/delete", "/admins/insert", "/admins/update"})
+@WebServlet(urlPatterns = {"/admins", "/admins/form", "/admins/delete", "/admins/insert", "/admins/update", "/admins/logged"})
 public class AdminsController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -32,19 +33,35 @@ public class AdminsController extends HttpServlet {
 			break;
 		}
 		case "/crud-manager/admins/form": {
-			listAdmins(req);
 			req.setAttribute("action", "insert");
 			ControllerUtil.forward(req, resp, "/form-admin.jsp");
 			break;
 		}
 		case "/crud-manager/admins/update": {
-			listAdmins(req);
 			Admin admin = loadAdmin(req);
 			req.setAttribute("admin", admin);
 			req.setAttribute("action", "update");
 			ControllerUtil.forward(req, resp, "/form-admin.jsp");
 			break;
 		}
+		
+		case "/crud-manager/admins/logged": {
+		    Object userLogged = req.getSession().getAttribute("user_logged");
+
+		    if (userLogged instanceof Admin adminLogged) {
+		        req.setAttribute("admin", adminLogged);
+		        req.setAttribute("action", "update");
+		        ControllerUtil.forward(req, resp, "/form-admin.jsp");
+		    } else {
+		        resp.sendRedirect(req.getContextPath() + "/login.jsp");
+		    }
+		    break;
+		}
+
+		
+	
+		
+		
 		default:
 			String message = "URL não suportada: " + action +".";
 			throw new IllegalArgumentException(message);
@@ -122,11 +139,16 @@ public class AdminsController extends HttpServlet {
 		String adminName = req.getParameter("name");
 		String adminGender = req.getParameter("gender");
 		String adminEMail = req.getParameter("mail");
+		String userPw = req.getParameter("user_pw");
+		
 		
 		Admin admin = new Admin();
 		admin.setName(adminName);
 		admin.setGender(adminGender);
 		admin.setEmail(adminEMail);
+		
+		String hashPw = PasswordEncryptor.hashPassword(userPw);
+		admin.setPassword(hashPw);
 		
 		AdminDAO dao = DAOFactory.createDAO(AdminDAO.class);
 		
@@ -149,11 +171,15 @@ public class AdminsController extends HttpServlet {
 		String adminName = req.getParameter("name");
 		String adminGender = req.getParameter("gender");
 		String adminEMail = req.getParameter("mail");
+		String userPw = req.getParameter("user_pw");
 		
 		Admin admin = loadAdmin(req);
 		admin.setName(adminName);
 		admin.setGender(adminGender);
 		admin.setEmail(adminEMail);
+		
+		String hashPw = PasswordEncryptor.hashPassword(userPw);
+		admin.setPassword(hashPw);
 		
 		AdminDAO dao = DAOFactory.createDAO(AdminDAO.class);
 		

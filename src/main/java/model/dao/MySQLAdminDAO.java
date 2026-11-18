@@ -22,7 +22,7 @@ public class MySQLAdminDAO implements AdminDAO {
 		db.setString(1, user.getName());
 		db.setString(2, user.getEmail());
 		db.setString(3, user.getGender());
-		db.setString(4, "1234");  // TODO: Implementar hash depois 
+		db.setString(4, user.getPassword());  
 		  
 		return db.executeUpdate() > 0;
 	}
@@ -45,7 +45,7 @@ public class MySQLAdminDAO implements AdminDAO {
 		db.setString(1, user.getName());
 		db.setString(2, user.getEmail());
 		db.setString(3, user.getGender());
-		db.setString(4, "1234"); //TODO hash
+		db.setString(4, user.getPassword()); //TODO hash
 		db.setInt(5, user.getId());
 		
 		return db.executeUpdate() > 0;
@@ -82,7 +82,6 @@ public class MySQLAdminDAO implements AdminDAO {
 		
 		List<Admin> users = new ArrayList<Admin>();
 			
-		// Declara um instrução SQL
 		String sqlQuery = "SELECT * FROM admins";
 		
 		db.createStatement();
@@ -117,13 +116,35 @@ public class MySQLAdminDAO implements AdminDAO {
 		return u;
 	}
 	
+	
+	
 	private Admin createAdmin(DBHandler db) throws ModelException {
 		Admin u = new Admin(db.getInt("id"));
 		u.setName(db.getString("nome"));
 		u.setGender(db.getString("sexo"));
 		u.setEmail(db.getString("email"));
-		u.setPassword("1234"); //TODO: hash
+		u.setPassword(db.getString("senha")); //TODO: hash
 		
 		return u;
+	}
+	
+	
+	@Override
+	public Admin findByEmail(String email) throws ModelException {
+		DBHandler db = new DBHandler();
+		
+		String sql = "SELECT * FROM admins WHERE email = ?";
+		
+		db.prepareStatement(sql);
+		db.setString(1, email);
+		db.executeQuery();
+		
+		Admin a = null;
+		while (db.next()) {
+			a = createAdmin(db);
+			break;
+		}
+		
+		return a;
 	}
 }

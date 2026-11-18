@@ -94,7 +94,6 @@ public class MySQLShowDAO implements ShowDAO {
 		String sqlQuery = "SELECT * FROM shows";
 		
 		db.createStatement();
-	
 		db.executeQuery(sqlQuery);
 
 		while (db.next()) {
@@ -127,9 +126,13 @@ public class MySQLShowDAO implements ShowDAO {
 	
 	
 	private Show createShow(DBHandler db) throws ModelException {
-		Band b = new Band(db.getInt("band_id"));
-		Employer e = new Employer (db.getInt("employer_id"));
-		LiveHouse lH = new LiveHouse (db.getInt("live_house_id"));
+		BandDAO bandDAO = DAOFactory.createDAO(BandDAO.class);
+		EmployerDAO employerDAO = DAOFactory.createDAO(EmployerDAO.class);
+		LiveHouseDAO liveHouseDAO = DAOFactory.createDAO(LiveHouseDAO.class);
+		
+		Band b = bandDAO.findById(db.getInt("band_id"));
+		Employer e = employerDAO.findById(db.getInt("employer_id"));
+		LiveHouse lH = liveHouseDAO.findById(db.getInt("live_house_id"));
 		
 		Show lh = new Show(db.getInt("id"), b, e, lH, db.getDouble("valor_cache"), db.getLocalDateTime("data_hora"), db.getInt("tempo_de_show"));
 		return lh;

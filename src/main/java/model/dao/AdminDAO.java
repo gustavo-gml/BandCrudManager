@@ -11,4 +11,5 @@ public interface AdminDAO {
 	boolean delete(Admin  user) throws ModelException;
 	List<Admin> listAll() throws ModelException;
 	Admin  findById(int id) throws ModelException;
+	Admin findByEmail(String email) throws ModelException;
 }
