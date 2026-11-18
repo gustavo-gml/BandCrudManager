@@ -1,6 +1,6 @@
 # 🎸 Band CRUD Manager
 
-Sistema web para gerenciar **bandas**, **contratantes**, **casas de show** e os **shows** que ligam os três. Desenvolvido em Java com Servlets e JSP, seguindo o padrão MVC com camada DAO, e MySQL como banco de dados.
+Sistema web para gerenciar **bandas**, **contratantes**, **casas de show** e os **shows** que acontecem nelas. Desenvolvido em Java com Servlets e JSP, seguindo o padrão MVC com camada DAO, e MySQL como banco de dados.
 
 ## Funcionalidades
 
@@ -9,8 +9,10 @@ Sistema web para gerenciar **bandas**, **contratantes**, **casas de show** e os 
   - **Administradores**
   - **Bandas**: nome, gênero, integrantes e data de fundação
   - **Contratantes**: razão social, nome fantasia e CNPJ
-  - **Casas de show**: razão social, nome fantasia, CNPJ e endereço
-  - **Shows**: banda, contratante, casa de show, valor do cachê, data/hora e tempo de show
+  - **Casas de show**: contratante responsável, nome fantasia, e-mail, endereço, capacidade, data de inauguração e estacionamento
+  - **Shows**: banda, casa de show, valor do cachê, data/hora e tempo de show (o contratante vem da casa de show)
+- Cada cadastro usa tipos de campo HTML variados (`text`, `email`, `number`, `date`, `datetime-local`, `range`, `checkbox`, `textarea` e `select`)
+- Relacionamentos escolhidos por `select`, sem códigos digitados à mão
 - Todas as rotas protegidas por filtro de autenticação (só o login fica público)
 - Busca e paginação (5 itens por página) nas tabelas, feitas no navegador com jQuery
 - Mensagens de sucesso e erro após cada operação
@@ -61,12 +63,40 @@ BandCrudManager/
 admins        (id, nome, email, sexo, senha)
 bands         (id, nome, genero, integrantes, fundacao)
 employers     (id, razao_social, nome_fantasia, CNPJ)
-live_house    (id, razao_social, nome_fantasia, CNPJ, endereco)
-shows         (id, band_id → bands, employer_id → employers,
-               live_house_id → live_house, valor_cache, data_hora, tempo_de_show)
+live_house    (id, employer_id → employers, nome_fantasia, email, endereco,
+               capacidade, data_inauguracao, estacionamento)
+shows         (id, band_id → bands, live_house_id → live_house,
+               valor_cache, data_hora, tempo_de_show)
 ```
 
-Um **show** referencia uma banda, um contratante e uma casa de show. Por isso, cadastre os três antes de agendar um show.
+Relacionamentos:
+
+- Uma **casa de show** pertence a um **contratante** (`live_house.employer_id`).
+- Um **show** referencia uma **banda** e uma **casa de show**. O contratante do show é o da casa escolhida.
+
+Por isso, cadastre primeiro os contratantes, depois as casas de show e as bandas, e só então agende os shows. Um contratante que tenha casas de show cadastradas não pode ser excluído, e o mesmo vale para uma casa de show que tenha shows.
+
+### Campos da casa de show
+
+| Campo | Coluna | Input HTML | Observação |
+| --- | --- | --- | --- |
+| Contratante | `employer_id` | `select` | Chave estrangeira |
+| Nome fantasia | `nome_fantasia` | `text` | |
+| E-mail de contato | `email` | `email` | Validado pelo navegador |
+| Capacidade | `capacidade` | `number` | Mínimo 1 |
+| Data de inauguração | `data_inauguracao` | `date` | Coluna `DATE` |
+| Estacionamento | `estacionamento` | `checkbox` | Coluna `TINYINT(1)`, 0 ou 1 |
+| Endereço | `endereco` | `textarea` | |
+
+### Campos do show
+
+| Campo | Coluna | Input HTML |
+| --- | --- | --- |
+| Banda | `band_id` | `select` |
+| Casa de show | `live_house_id` | `select` |
+| Valor do cachê | `valor_cache` | `number` |
+| Data e hora | `data_hora` | `datetime-local` |
+| Tempo de show | `tempo_de_show` | `range` (30 a 300 min, de 15 em 15) |
 
 ## Como executar
 
@@ -85,7 +115,7 @@ Execute o script SQL no MySQL:
 mysql -u root -p < sql-gustavo-crud-manager.sql
 ```
 
-> ⚠️ O script começa com `DROP DATABASE IF EXISTS band_manager`. Se o banco já existir, todos os dados dele serão apagados.
+> ⚠️ O script começa com `DROP DATABASE IF EXISTS band_manager`. Se o banco já existir, todos os dados dele serão apagados. Isso inclui bancos criados com a versão antiga do script, em que `live_house` tinha razão social e CNPJ e `shows` tinha `employer_id`.
 
 ### 3. Configurar a conexão
 
@@ -141,7 +171,7 @@ Depois de entrar, você pode cadastrar novos administradores em **Administradore
 | Casas de show | `/liveHouses` |
 | Shows | `/shows` |
 
-As ações seguem o padrão `/{recurso}/form`, `/insert`, `/update` e `/delete`.
+As ações seguem o padrão `/{recurso}/form`, `/insert`, `/update` e `/delete`. A exclusão é feita por POST, com o campo `id` enviado pelo modal de confirmação.
 
 ## Segurança
 
