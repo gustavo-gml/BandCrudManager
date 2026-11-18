@@ -13,7 +13,7 @@
 		<main class="container">
 
 			<div class="page-header">
-				<h1>Controle de Bandas <small>Bandas, contratantes, casas de show e os shows que ligam os três</small></h1>
+				<h1>Controle de Bandas <small>Bandas, contratantes, casas de show e os shows que acontecem nelas</small></h1>
 			</div>
 
 			<div class="row">
@@ -38,7 +38,7 @@
 							<h3 class="panel-title"><span class="glyphicon glyphicon-briefcase"></span>&nbsp;Contratantes</h3>
 						</div>
 						<div class="panel-body">
-							<p>Empresas que contratam as bandas.</p>
+							<p>Empresas que administram as casas de show.</p>
 							<p class="text-muted">Razão social, nome fantasia e CNPJ.</p>
 						</div>
 						<div class="panel-footer">
@@ -54,7 +54,7 @@
 						</div>
 						<div class="panel-body">
 							<p>Os locais onde os shows acontecem.</p>
-							<p class="text-muted">Razão social, nome fantasia, CNPJ e endereço.</p>
+							<p class="text-muted">Contratante, nome, e-mail, endereço, cpd., data</p>
 						</div>
 						<div class="panel-footer">
 							<a href="${pageContext.request.contextPath}/liveHouses" class="btn btn-danger btn-sm">Ver casas de show</a>
@@ -66,8 +66,9 @@
 			<div class="well">
 				<h3><span class="glyphicon glyphicon-calendar"></span>&nbsp;Shows</h3>
 				<p>
-					Um show liga uma banda, um contratante e uma casa de show, com valor do cachê,
-					data e hora e tempo de show. Cadastre os três primeiro, depois escolha cada um ao agendar.
+					Um show liga uma banda a uma casa de show, com valor do cachê, data e hora e tempo de show.
+					O contratante do show é o da casa escolhida. Cadastre primeiro os contratantes, depois as casas
+					de show e as bandas, e então agende cada show.
 				</p>
 				<a href="${pageContext.request.contextPath}/shows" class="btn btn-danger">Ver shows</a>
 				<a href="${pageContext.request.contextPath}/shows/form" class="btn btn-default">Adicionar show</a>
@@ -84,4 +85,3 @@
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 	</body>
 </html>
-

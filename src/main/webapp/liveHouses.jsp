@@ -32,7 +32,7 @@
 			    </div>
 			 
 			    <div class="col-md-3">
-			        <a href="/crud-manager/liveHouses/form" class="btn btn-danger pull-right h2"><span class="glyphicon glyphicon-plus" /></span>&nbspAdicionar Banda</a>
+			        <a href="${pageContext.request.contextPath}/liveHouses/form" class="btn btn-danger pull-right h2"><span class="glyphicon glyphicon-plus"></span>&nbsp;Adicionar Casa de Show</a>
 			    </div>
 	     	</div>
 	 
@@ -43,10 +43,13 @@
 			        <table class="table table-striped table-hover" cellspacing="0" cellpadding="0">
 			            <thead>
 			                <tr>
-			                	<th>Razão Social</th>
 			                    <th>Nome Fantasia</th>
-			                    <th>CNPJ</th>
+			                    <th>Contratante</th>
+			                    <th>E-mail</th>
 			                    <th>Endereço</th>
+			                    <th>Capacidade</th>
+			                    <th>Inauguração</th>
+			                    <th>Estacionamento</th>
 			                    <th>Editar</th>
 			                    <th>Excluir</th>
 			                 </tr>
@@ -54,10 +57,13 @@
 			            <tbody>
 			            	<c:forEach var="liveHouse" items="${liveHouses}">
 								<tr>
-				                    <td>${liveHouse.getRazaoSocial()}</td>
 				                    <td>${liveHouse.getNomeFantasia()}</td>
-				                    <td>${liveHouse.getCnpj()}</td>
-				                    <td>${liveHouse.getEndereco()}</td>		
+				                    <td>${liveHouse.getEmployer().getNomeFantasia()}</td>
+				                    <td>${liveHouse.getEmail()}</td>
+				                    <td>${liveHouse.getEndereco()}</td>
+				                    <td>${liveHouse.getCapacidade()}</td>
+				                    <td>${liveHouse.getDataInauguracao()}</td>
+				                    <td>${liveHouse.isEstacionamento() ? 'Sim' : 'Não'}</td>
 				                    		                    
 				                    <td class="actions">
 				                        <a class="btn btn-info btn-xs" 
@@ -100,9 +106,6 @@
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/table-utils.js"></script>
 		<script type="text/javascript">
 		$(document).ready(function() {
-		   
-		    
-		    
 		    $(".modal-remove").click(function () {
 	            var liveHouseName = $(this).attr('name');   
 	            var liveHouseId = $(this).attr('liveHouse-id');
@@ -112,8 +115,6 @@
 	            $("#form").attr("action", "${pageContext.request.contextPath}/liveHouses/delete");
 	        });
 		});
-			
-			
 		</script>
 	</body>
 </html>

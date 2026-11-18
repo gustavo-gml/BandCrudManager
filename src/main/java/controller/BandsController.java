@@ -15,8 +15,7 @@ import model.dao.BandDAO;
 import model.dao.DAOFactory;
 
 @SuppressWarnings("serial")
-// Herda da classe HttpServlet (extends HttpServlet) para ser tratada como um Servlet
-// Anota a classe (@WebServlet) ajustando as URLs (urlPatterns) as quais ela responde
+
 @WebServlet(urlPatterns = { "/bands", "/bands/form", "/bands/delete", "/bands/insert", "/bands/update"})
 public class BandsController extends HttpServlet {
 	

@@ -1,11 +1,16 @@
 package model;
 
+import java.time.LocalDate;
+
 public class LiveHouse {
 	private Integer id;
-	private String razaoSocial;
+	private Employer employer;
 	private String nomeFantasia;
-	private String Cnpj;
+	private String email;
 	private String endereco;
+	private Integer capacidade;
+	private LocalDate dataInauguracao;
+	private boolean estacionamento;
 	
 	public LiveHouse() {
 		super();
@@ -15,27 +20,33 @@ public class LiveHouse {
 		this.id = id;
 	}
 
-	public LiveHouse(String razaoSocial, String nomeFantasia, String Cnpj, String endereco) {
-		this.razaoSocial = razaoSocial;
+	public LiveHouse(Employer employer, String nomeFantasia, String email, String endereco,
+			Integer capacidade, LocalDate dataInauguracao, boolean estacionamento) {
+		this.employer = employer;
 		this.nomeFantasia = nomeFantasia;
-		this.Cnpj = Cnpj;
+		this.email = email;
 		this.endereco = endereco;
+		this.capacidade = capacidade;
+		this.dataInauguracao = dataInauguracao;
+		this.estacionamento = estacionamento;
 	}
 	
-	public LiveHouse(int id, String razaoSocial, String nomeFantasia, String Cnpj, String endereco) {
+	public LiveHouse(int id, Employer employer, String nomeFantasia, String email, String endereco,
+			Integer capacidade, LocalDate dataInauguracao, boolean estacionamento) {
+		this(employer, nomeFantasia, email, endereco, capacidade, dataInauguracao, estacionamento);
 		this.id = id;
-		this.razaoSocial = razaoSocial;
-		this.nomeFantasia = nomeFantasia;
-		this.Cnpj = Cnpj;
-		this.endereco = endereco;
 	}
 
-	public String getRazaoSocial() {
-		return razaoSocial;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
+	public Employer getEmployer() {
+		return employer;
+	}
+
+	public void setEmployer(Employer employer) {
+		this.employer = employer;
 	}
 
 	public String getNomeFantasia() {
@@ -46,12 +57,12 @@ public class LiveHouse {
 		this.nomeFantasia = nomeFantasia;
 	}
 
-	public String getCnpj() {
-		return Cnpj;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCnpj(String cnpj) {
-		Cnpj = cnpj;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getEndereco() {
@@ -62,14 +73,32 @@ public class LiveHouse {
 		this.endereco = endereco;
 	}
 
-	public int getId() {
-		return id;
+	public Integer getCapacidade() {
+		return capacidade;
+	}
+
+	public void setCapacidade(Integer capacidade) {
+		this.capacidade = capacidade;
+	}
+
+	public LocalDate getDataInauguracao() {
+		return dataInauguracao;
+	}
+
+	public void setDataInauguracao(LocalDate dataInauguracao) {
+		this.dataInauguracao = dataInauguracao;
+	}
+
+	public boolean isEstacionamento() {
+		return estacionamento;
+	}
+
+	public void setEstacionamento(boolean estacionamento) {
+		this.estacionamento = estacionamento;
 	}
 	
 	@Override
 	public String toString() {
 		return "Casa: " + this.nomeFantasia + " - Endereço: " + this.endereco;
 	}
-	
-	
 }
