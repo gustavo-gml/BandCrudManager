@@ -65,7 +65,7 @@
 			<hr />
 			<div id="actions" class="row pull-right">
 				<div class="col-md-12">
-					<a href="${pageContext.request.contextPath}/employers" 
+					<a href="${pageContext.request.contextPath}/liveHouses" 
 					   class="btn btn-default">Cancelar</a>
 					
 					<button type="submit" 

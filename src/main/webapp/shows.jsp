@@ -92,12 +92,7 @@
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/table-utils.js"></script>
 		<script type="text/javascript">
 		$(document).ready(function() {
-		    // 1. Fecha o alert após 3 segundos
-		    setTimeout(function() {
-		        $("#alert").slideUp(500);
-		    }, 3000);
 		    
-		    // 2. Configura o modal de exclusão
 		    $(".modal-remove").click(function () {
 	            var showName = $(this).attr('name');   
 	            var showId = $(this).attr('show-id');

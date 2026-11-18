@@ -65,7 +65,7 @@
 				<hr />
 				<div id="actions" class="row pull-right">
 					<div class="col-md-12">
-						<a href="${pageContext.request.contextPath}/posts" class="btn btn-default">Cancelar</a>
+						<a href="${pageContext.request.contextPath}/bands" class="btn btn-default">Cancelar</a>
 						<button type="submit" class="btn btn-primary">${not empty band ? "Alterar Banda" : "Criar Banda"}</button>
 					</div>
 				</div>

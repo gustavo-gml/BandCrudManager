@@ -42,7 +42,7 @@
                 </div>
 
                 <c:if test="${param.erro == 'true'}">
-                  <p class="text-danger small">Usuário ou senha inválidos.</p>
+                  <p class="text-danger small">Email ou senha inválidos.</p>
                 </c:if>
               </form>
             </div>

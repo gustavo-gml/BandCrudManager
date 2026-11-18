@@ -1,10 +1,10 @@
 $(document).ready(function() {
-    // 1. Fecha o alert automaticamente após 3 segundos
+   
     setTimeout(function() {
         $("#alert").slideUp(500);
     }, 3000);
 
-    // 2. Busca e Paginação genérica para qualquer tabela
+   
     var itensPorPagina = 5;
     var paginaAtual = 1;
     var todasAsLinhas = $("table tbody tr");
@@ -18,6 +18,7 @@ $(document).ready(function() {
 
         todasAsLinhas.hide();
         var inicio = (paginaAtual - 1) * itensPorPagina;
+		
         var fim = inicio + itensPorPagina;
         linhasFiltradas.slice(inicio, fim).show();
 

@@ -15,7 +15,7 @@ import model.dao.DAOFactory;
 import model.utils.PasswordEncryptor;
 
 @WebServlet(urlPatterns= {"/login", "/logout"} )
-public class loginController extends HttpServlet {
+public class LoginController extends HttpServlet {
 	
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
@@ -53,7 +53,7 @@ public class loginController extends HttpServlet {
 		
 		
 		
-		//Verificar se as senhas são iguais
+		
 		if(PasswordEncryptor.checkPassword(userPw, userToLogin.getPassword()) == true) {
 			req.getSession().setAttribute("user_logged", userToLogin);
 			resp.sendRedirect("/crud-manager/");

@@ -95,11 +95,6 @@
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/table-utils.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
-			    // fecha o alert após 3 segundos
-			    setTimeout(function() {
-			        $("#alert").slideUp(500);
-			    }, 3000);
-			    
 			    // ao clicar no delete de algum post, pega o nome do usuário, 
 			    // o id do usuário e a ação (delete) e envia para o modal 
 			    $(".modal-remove").click(function () {
