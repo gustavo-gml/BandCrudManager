@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Band;
-import model.Employer;
 import model.LiveHouse;
 import model.ModelException;
 import model.Show;
@@ -17,16 +16,16 @@ public class MySQLShowDAO implements ShowDAO {
 		
 		DBHandler db = new DBHandler();
 		
-		String sqlInsert = "INSERT INTO shows VALUES "
-				+ " (DEFAULT, ?, ?, ?, ?, ?, ?);";
+		String sqlInsert = "INSERT INTO shows "
+				+ " (band_id, live_house_id, valor_cache, data_hora, tempo_de_show) "
+				+ " VALUES (?, ?, ?, ?, ?);";
 		
 		db.prepareStatement(sqlInsert);
 		db.setInt(1, s.getBand().getId());
-		db.setInt(2, s.getEmployer().getId());
-		db.setInt(3, s.getLiveHouse().getId());
-		db.setDouble(4, s.getValorCache()); 
-		db.setLocalDateTime(5, s.getDataHora());
-		db.setInt(6, s.getTempoShow());
+		db.setInt(2, s.getLiveHouse().getId());
+		db.setDouble(3, s.getValorCache()); 
+		db.setLocalDateTime(4, s.getDataHora());
+		db.setInt(5, s.getTempoShow());
 		  
 		return db.executeUpdate() > 0;
 	}
@@ -38,23 +37,20 @@ public class MySQLShowDAO implements ShowDAO {
 		
 		String sqlUpdate = "UPDATE shows "
 				         	+ "SET band_id = ?, "
-				         	+ "employer_id = ?, "
 				         	+ "live_house_id = ?, "
 				         	+ "valor_cache = ?, "
 				         	+ "data_hora = ?, "
 				         	+ "tempo_de_show = ? "
 				         + "WHERE id = ?";
 		
-		
 		db.prepareStatement(sqlUpdate);
 		
 		db.setInt(1, s.getBand().getId());
-		db.setInt(2, s.getEmployer().getId());
-		db.setInt(3, s.getLiveHouse().getId());
-		db.setDouble(4, s.getValorCache()); 
-		db.setLocalDateTime(5, s.getDataHora());
-		db.setInt(6, s.getTempoShow());
-		db.setInt(7, s.getId());
+		db.setInt(2, s.getLiveHouse().getId());
+		db.setDouble(3, s.getValorCache()); 
+		db.setLocalDateTime(4, s.getDataHora());
+		db.setInt(5, s.getTempoShow());
+		db.setInt(6, s.getId());
 		
 		return db.executeUpdate() > 0;
 	}
@@ -90,7 +86,6 @@ public class MySQLShowDAO implements ShowDAO {
 		
 		List<Show> shows = new ArrayList<Show>();
 			
-		// Declara um instrução SQL
 		String sqlQuery = "SELECT * FROM shows";
 		
 		db.createStatement();
@@ -123,18 +118,13 @@ public class MySQLShowDAO implements ShowDAO {
 		return s;
 	}
 	
-	
-	
 	private Show createShow(DBHandler db) throws ModelException {
 		BandDAO bandDAO = DAOFactory.createDAO(BandDAO.class);
-		EmployerDAO employerDAO = DAOFactory.createDAO(EmployerDAO.class);
 		LiveHouseDAO liveHouseDAO = DAOFactory.createDAO(LiveHouseDAO.class);
 		
 		Band b = bandDAO.findById(db.getInt("band_id"));
-		Employer e = employerDAO.findById(db.getInt("employer_id"));
 		LiveHouse lH = liveHouseDAO.findById(db.getInt("live_house_id"));
 		
-		Show lh = new Show(db.getInt("id"), b, e, lH, db.getDouble("valor_cache"), db.getLocalDateTime("data_hora"), db.getInt("tempo_de_show"));
-		return lh;
+		return new Show(db.getInt("id"), b, lH, db.getDouble("valor_cache"), db.getLocalDateTime("data_hora"), db.getInt("tempo_de_show"));
 	}
 }

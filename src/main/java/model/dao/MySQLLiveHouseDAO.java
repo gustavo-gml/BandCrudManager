@@ -4,6 +4,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Employer;
 import model.LiveHouse;
 import model.ModelException;
 
@@ -14,14 +15,18 @@ public class MySQLLiveHouseDAO implements LiveHouseDAO {
 		
 		DBHandler db = new DBHandler();
 		
-		String sqlInsert = "INSERT INTO live_house VALUES "
-				+ " (DEFAULT, ?, ?, ?, ?);";
+		String sqlInsert = "INSERT INTO live_house "
+				+ " (employer_id, nome_fantasia, email, endereco, capacidade, data_inauguracao, estacionamento) "
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?);";
 		
 		db.prepareStatement(sqlInsert);
-		db.setString(1, lH.getRazaoSocial());
+		db.setInt(1, lH.getEmployer().getId());
 		db.setString(2, lH.getNomeFantasia());
-		db.setString(3, lH.getCnpj());
-		db.setString(4, lH.getEndereco()); 
+		db.setString(3, lH.getEmail());
+		db.setString(4, lH.getEndereco());
+		db.setInt(5, lH.getCapacidade());
+		db.setLocalDateTime(6, lH.getDataInauguracao().atStartOfDay());
+		db.setInt(7, lH.isEstacionamento() ? 1 : 0);
 		  
 		return db.executeUpdate() > 0;
 	}
@@ -32,20 +37,25 @@ public class MySQLLiveHouseDAO implements LiveHouseDAO {
 		DBHandler db = new DBHandler();
 		
 		String sqlUpdate = "UPDATE live_house "
-				         	+ "SET razao_social = ?, "
+				         	+ "SET employer_id = ?, "
 				         	+ "nome_fantasia = ?, "
-				         	+ "CNPJ = ?, "
-				         	+ "endereco = ? "
+				         	+ "email = ?, "
+				         	+ "endereco = ?, "
+				         	+ "capacidade = ?, "
+				         	+ "data_inauguracao = ?, "
+				         	+ "estacionamento = ? "
 				         + "WHERE id = ?";
-		
 		
 		db.prepareStatement(sqlUpdate);
 		
-		db.setString(1, lH.getRazaoSocial());
+		db.setInt(1, lH.getEmployer().getId());
 		db.setString(2, lH.getNomeFantasia());
-		db.setString(3, lH.getCnpj());
-		db.setString(4, lH.getEndereco()); 
-		db.setInt(5, lH.getId());
+		db.setString(3, lH.getEmail());
+		db.setString(4, lH.getEndereco());
+		db.setInt(5, lH.getCapacidade());
+		db.setLocalDateTime(6, lH.getDataInauguracao().atStartOfDay());
+		db.setInt(7, lH.isEstacionamento() ? 1 : 0);
+		db.setInt(8, lH.getId());
 		
 		return db.executeUpdate() > 0;
 	}
@@ -81,7 +91,6 @@ public class MySQLLiveHouseDAO implements LiveHouseDAO {
 		
 		List<LiveHouse> lHs = new ArrayList<LiveHouse>();
 			
-		// Declara um instrução SQL
 		String sqlQuery = "SELECT * FROM live_house";
 		
 		db.createStatement();
@@ -116,8 +125,18 @@ public class MySQLLiveHouseDAO implements LiveHouseDAO {
 	}
 	
 	private LiveHouse createLiveHouse(DBHandler db) throws ModelException {
-		LiveHouse lh = new LiveHouse(db.getInt("id"), db.getString("razao_social"), db.getString("nome_fantasia"), db.getString("CNPJ"), db.getString("endereco"));
-		return lh;
+		EmployerDAO employerDAO = DAOFactory.createDAO(EmployerDAO.class);
+		Employer employer = employerDAO.findById(db.getInt("employer_id"));
+		
+		return new LiveHouse(
+				db.getInt("id"),
+				employer,
+				db.getString("nome_fantasia"),
+				db.getString("email"),
+				db.getString("endereco"),
+				db.getInt("capacidade"),
+				db.getLocalDateTime("data_inauguracao").toLocalDate(),
+				db.getInt("estacionamento") == 1);
 	}
 	
 }

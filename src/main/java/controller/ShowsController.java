@@ -10,13 +10,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Band;
-import model.Employer;
 import model.LiveHouse;
 import model.ModelException;
 import model.Show;
 import model.dao.BandDAO;
 import model.dao.DAOFactory;
-import model.dao.EmployerDAO;
 import model.dao.LiveHouseDAO;
 import model.dao.ShowDAO;
 
@@ -111,16 +109,13 @@ public class ShowsController extends HttpServlet{
 	// Carrega as listas usadas nos selects do formulário
 	private void loadSelectLists(HttpServletRequest req) {
 		BandDAO bandDao = DAOFactory.createDAO(BandDAO.class);
-		EmployerDAO employerDao = DAOFactory.createDAO(EmployerDAO.class);
 		LiveHouseDAO liveHouseDao = DAOFactory.createDAO(LiveHouseDAO.class);
 		
 		try {
 			List<Band> bands = bandDao.listAll();
-			List<Employer> employers = employerDao.listAll();
 			List<LiveHouse> liveHouses = liveHouseDao.listAll();
 			
 			req.setAttribute("bands", bands);
-			req.setAttribute("employers", employers);
 			req.setAttribute("liveHouses", liveHouses);
 		} catch (ModelException e) {
 			// Log no servidor
@@ -132,13 +127,12 @@ public class ShowsController extends HttpServlet{
 	private void updateShow(HttpServletRequest req, HttpServletResponse resp) {
 		Integer id = Integer.parseInt(req.getParameter("showId"));
 		Integer bandId = Integer.parseInt(req.getParameter("bandId"));
-		Integer employerId = Integer.parseInt(req.getParameter("employerId"));
 		Integer liveHouseId = Integer.parseInt(req.getParameter("liveHouseId"));
 		Double valorCache = Double.parseDouble(req.getParameter("valorCache"));
 		LocalDateTime dataHora = LocalDateTime.parse(req.getParameter("dataHora"));
 		Integer tempoShow = Integer.parseInt(req.getParameter("tempoShow"));
 	
-		Show s = new Show(id, new Band(bandId), new Employer(employerId), new LiveHouse(liveHouseId), valorCache, dataHora, tempoShow);
+		Show s = new Show(id, new Band(bandId), new LiveHouse(liveHouseId), valorCache, dataHora, tempoShow);
 		
 		ShowDAO dao = DAOFactory.createDAO(ShowDAO.class);
 		
@@ -161,13 +155,12 @@ public class ShowsController extends HttpServlet{
 	private void insertShow(HttpServletRequest req, HttpServletResponse resp) {
 		
 		Integer bandId = Integer.parseInt(req.getParameter("bandId"));
-		Integer employerId = Integer.parseInt(req.getParameter("employerId"));
 		Integer liveHouseId = Integer.parseInt(req.getParameter("liveHouseId"));
 		Double valorCache = Double.parseDouble(req.getParameter("valorCache"));
 		LocalDateTime dataHora = LocalDateTime.parse(req.getParameter("dataHora"));
 		Integer tempoShow = Integer.parseInt(req.getParameter("tempoShow"));
 	
-		Show s = new Show(new Band(bandId), new Employer(employerId), new LiveHouse(liveHouseId), valorCache, dataHora, tempoShow);
+		Show s = new Show(new Band(bandId), new LiveHouse(liveHouseId), valorCache, dataHora, tempoShow);
 		
 		ShowDAO dao = DAOFactory.createDAO(ShowDAO.class);
 		

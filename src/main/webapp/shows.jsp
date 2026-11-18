@@ -32,7 +32,7 @@
 			    </div>
 			 
 			    <div class="col-md-3">
-			        <a href="/crud-manager/shows/form" class="btn btn-danger pull-right h2"><span class="glyphicon glyphicon-plus"></span>&nbsp;Adicionar Show</a>
+			        <a href="${pageContext.request.contextPath}/shows/form" class="btn btn-danger pull-right h2"><span class="glyphicon glyphicon-plus"></span>&nbsp;Adicionar Show</a>
 			    </div>
 	     	</div>
 	 
@@ -44,8 +44,8 @@
 			            <thead>
 			                <tr>
 			                	<th>Banda</th>
-			                    <th>Contratante</th>
 			                    <th>Casa de Show</th>
+			                    <th>Contratante</th>
 			                    <th>Cachê</th>
 			                    <th>Data/Hora</th>
 			                    <th>Tempo de Show</th>
@@ -57,11 +57,11 @@
 			            	<c:forEach var="show" items="${shows}">
 								<tr>
 				                    <td>${show.getBand()}</td>
-									<td>${show.getEmployer()}</td>
 									<td>${show.getLiveHouse().getNomeFantasia()}</td>
+									<td>${show.getLiveHouse().getEmployer().getNomeFantasia()}</td>
 				                    <td>${show.getValorCache()}</td>
 				                    <td>${show.getDataHora()}</td>
-				                    <td>${show.getTempoShow()}</td>
+				                    <td>${show.getTempoShow()} min</td>
 				                    		                    
 				                    <td class="actions">
 				                        <a class="btn btn-info btn-xs" 
@@ -85,10 +85,8 @@
 			 
 			     </div>
 	     	</div>
-		</div>
-		
-		
-			<div id="bottom" class="row">
+
+	     	<div id="bottom" class="row">
 	     		<div class="col-md-12">
 			        <ul class="pagination">
 			            <li class="disabled"><a>&lt; Anterior</a></li>
@@ -99,7 +97,7 @@
 			        </ul><!-- /.pagination -->
 			    </div>
 	     	</div>
-	
+		</div>
 		
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

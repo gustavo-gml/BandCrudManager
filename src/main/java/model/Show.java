@@ -5,12 +5,10 @@ import java.time.LocalDateTime;
 public class Show {
 	private Integer id;
 	private Band band;
-	private Employer employer;
 	private LiveHouse liveHouse;
 	private Double valorCache;
 	private LocalDateTime dataHora;
 	private Integer tempoShow;
-	
 	
 	public Show() {
 		super();
@@ -20,38 +18,24 @@ public class Show {
 		this.id = id;
 	}
 	
-	public Show(Band band, Employer employer, LiveHouse liveHouse, Double valorCache, LocalDateTime dataHora, int tempoShow) {
+	public Show(Band band, LiveHouse liveHouse, Double valorCache, LocalDateTime dataHora, int tempoShow) {
 		this.band = band;
-		this.employer = employer;
 		this.liveHouse = liveHouse;
 		this.valorCache = valorCache;
 		this.dataHora = dataHora;
 		this.tempoShow = tempoShow;
 	}
 	
-	public Show(int id, Band band, Employer employer, LiveHouse liveHouse, Double valorCache, LocalDateTime dataHora, int tempoShow) {
+	public Show(int id, Band band, LiveHouse liveHouse, Double valorCache, LocalDateTime dataHora, int tempoShow) {
+		this(band, liveHouse, valorCache, dataHora, tempoShow);
 		this.id = id;
-		this.band = band;
-		this.employer = employer;
-		this.liveHouse = liveHouse;
-		this.valorCache = valorCache;
-		this.dataHora = dataHora;
-		this.tempoShow = tempoShow;
 	}
-	
-	
 
 	public Band getBand() {
 		return band;
 	}
 	public void setBand(Band band) {
 		this.band = band;
-	}
-	public Employer getEmployer() {
-		return employer;
-	}
-	public void setEmployer(Employer employer) {
-		this.employer = employer;
 	}
 	public LiveHouse getLiveHouse() {
 		return liveHouse;
@@ -85,6 +69,4 @@ public class Show {
 	public String toString() {
 		return "Banda: " + this.band + " - Data: " + this.dataHora;
 	}
-	
-	
 }

@@ -32,36 +32,23 @@
 						</c:forEach>
 					</select>
 				</div>
-				
-				<div class="form-group col-md-4">
-					<label for="employerId">Contratante</label>
-					<select class="form-control" id="employerId" name="employerId" 
-						    required 
-						    oninvalid="this.setCustomValidity('Por favor, selecione o contratante.')"
-						    oninput="setCustomValidity('')">
-						<option value="">Selecione o contratante</option>
-						<c:forEach var="employer" items="${employers}">
-							<option value="${employer.getId()}" ${show.getEmployer().getId() == employer.getId() ? 'selected' : ''}>${employer}</option>
-						</c:forEach>
-					</select>
-				</div>
 
 				<div class="form-group col-md-4">
-					<label for="liveHouseId">Casa de Show</label>
+					<label for="liveHouseId">Casa de Show (o contratante vem da casa)</label>
 					<select class="form-control" id="liveHouseId" name="liveHouseId" 
 						    required 
 						    oninvalid="this.setCustomValidity('Por favor, selecione a casa de show.')"
 						    oninput="setCustomValidity('')">
 						<option value="">Selecione a casa de show</option>
 						<c:forEach var="liveHouse" items="${liveHouses}">
-							<option value="${liveHouse.getId()}" ${show.getLiveHouse().getId() == liveHouse.getId() ? 'selected' : ''}>${liveHouse.getNomeFantasia()}</option>
+							<option value="${liveHouse.getId()}" ${show.getLiveHouse().getId() == liveHouse.getId() ? 'selected' : ''}>${liveHouse.getNomeFantasia()} - ${liveHouse.getEmployer().getNomeFantasia()}</option>
 						</c:forEach>
 					</select>
 				</div>
 				
 				<div class="form-group col-md-4">
 					<label for="valorCache">Valor do Cachê</label>
-					<input type="number" step="0.01" class="form-control" id="valorCache" name="valorCache" 
+					<input type="number" step="0.01" min="0" class="form-control" id="valorCache" name="valorCache" 
 						   placeholder="Valor do Cachê" 
 						   required 
 						   oninvalid="this.setCustomValidity('Por favor, informe o valor do cachê.')"
@@ -69,7 +56,7 @@
 						   value="${show.getValorCache()}"/>
 				</div>
 				
-				<div class="form-group col-md-4">
+				<div class="form-group col-md-6">
 					<label for="dataHora">Data e Hora</label>
 					<input type="datetime-local" class="form-control" id="dataHora" name="dataHora" 
 						   required 
@@ -78,14 +65,11 @@
 						   value="${show.getDataHora()}"/>
 				</div>
 				
-				<div class="form-group col-md-4">
-					<label for="tempoShow">Tempo de Show (Em minutos)</label>
-					<input type="number" class="form-control" id="tempoShow" name="tempoShow" 
-						   placeholder="Tempo de Show" 
-						   required 
-						   oninvalid="this.setCustomValidity('Por favor, informe o tempo de show.')"
-						   oninput="setCustomValidity('')" 
-						   value="${show.getTempoShow()}"/>
+				<div class="form-group col-md-6">
+					<label for="tempoShow">Tempo de Show: <strong><span id="tempoShowValue">${not empty show ? show.getTempoShow() : 90}</span> min</strong></label>
+					<input type="range" min="30" max="300" step="15" id="tempoShow" name="tempoShow" 
+						   value="${not empty show ? show.getTempoShow() : 90}"
+						   oninput="document.getElementById('tempoShowValue').textContent = this.value"/>
 				</div>
 			</div>
 			

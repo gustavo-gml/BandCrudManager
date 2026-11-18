@@ -1,7 +1,7 @@
 package controller;
 
 import java.io.IOException;
-
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -10,10 +10,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import model.Employer;
 import model.LiveHouse;
 import model.ModelException;
 
 import model.dao.DAOFactory;
+import model.dao.EmployerDAO;
 import model.dao.LiveHouseDAO;
 
 
@@ -31,6 +33,7 @@ public class LiveHouseController extends HttpServlet{
 			break;
 		}
 		case "/crud-manager/liveHouses/form": {
+			loadEmployers(req);
 			req.setAttribute("action", "insert");
 			ControllerUtil.forward(req, resp, "/form-live-house.jsp");
 			break;
@@ -38,6 +41,7 @@ public class LiveHouseController extends HttpServlet{
 		
 		case "/crud-manager/liveHouses/update": {
 			LiveHouse lH = loadLiveHouse(req);
+			loadEmployers(req);
 			req.setAttribute("liveHouse", lH);
 			req.setAttribute("action", "update");
 			ControllerUtil.forward(req, resp, "/form-live-house.jsp");
@@ -102,14 +106,32 @@ public class LiveHouseController extends HttpServlet{
 		return null;
 	}
 
+	// Carrega a lista de contratantes usada no select do formulário
+	private void loadEmployers(HttpServletRequest req) {
+		EmployerDAO employerDao = DAOFactory.createDAO(EmployerDAO.class);
+		
+		try {
+			List<Employer> employers = employerDao.listAll();
+			req.setAttribute("employers", employers);
+		} catch (ModelException e) {
+			// Log no servidor
+			e.printStackTrace();
+			ControllerUtil.errorMessage(req, e.getMessage());
+		}
+	}
+
 	private void updateLiveHouse(HttpServletRequest req, HttpServletResponse resp) {
 		Integer id = Integer.parseInt(req.getParameter("liveHouseId"));
-		String razaoSocial = req.getParameter("razaoSocial");
+		Integer employerId = Integer.parseInt(req.getParameter("employerId"));
 		String nomeFantasia = req.getParameter("nomeFantasia");
-		String cnpj = req.getParameter("cnpj");
+		String email = req.getParameter("email");
 		String endereco = req.getParameter("endereco");
+		Integer capacidade = Integer.parseInt(req.getParameter("capacidade"));
+		LocalDate dataInauguracao = LocalDate.parse(req.getParameter("dataInauguracao"));
+		// checkbox desmarcado não é enviado no POST
+		boolean estacionamento = req.getParameter("estacionamento") != null;
 	
-		LiveHouse lH = new LiveHouse(id, razaoSocial,  nomeFantasia, cnpj, endereco);
+		LiveHouse lH = new LiveHouse(id, new Employer(employerId), nomeFantasia, email, endereco, capacidade, dataInauguracao, estacionamento);
 		
 		LiveHouseDAO dao = DAOFactory.createDAO(LiveHouseDAO.class);
 		
@@ -131,14 +153,15 @@ public class LiveHouseController extends HttpServlet{
 
 	private void insertLiveHouse(HttpServletRequest req, HttpServletResponse resp) {
 		
-		String razaoSocial = req.getParameter("razaoSocial");
+		Integer employerId = Integer.parseInt(req.getParameter("employerId"));
 		String nomeFantasia = req.getParameter("nomeFantasia");
-		String cnpj = req.getParameter("cnpj");
+		String email = req.getParameter("email");
 		String endereco = req.getParameter("endereco");
+		Integer capacidade = Integer.parseInt(req.getParameter("capacidade"));
+		LocalDate dataInauguracao = LocalDate.parse(req.getParameter("dataInauguracao"));
+		boolean estacionamento = req.getParameter("estacionamento") != null;
 	
-		LiveHouse lH = new LiveHouse(razaoSocial,  nomeFantasia, cnpj, endereco);
-		
-		
+		LiveHouse lH = new LiveHouse(new Employer(employerId), nomeFantasia, email, endereco, capacidade, dataInauguracao, estacionamento);
 		
 		LiveHouseDAO dao = DAOFactory.createDAO(LiveHouseDAO.class);
 		
@@ -147,7 +170,7 @@ public class LiveHouseController extends HttpServlet{
 				ControllerUtil.sucessMessage(req, "Casa de Show '" + lH + "' salva com sucesso.");
 			}
 			else {
-				ControllerUtil.errorMessage(req, "Casa de Show'" + lH + "' não pode ser salva.");
+				ControllerUtil.errorMessage(req, "Casa de Show '" + lH + "' não pode ser salva.");
 			}
 				
 		} catch (ModelException e) {
@@ -161,7 +184,8 @@ public class LiveHouseController extends HttpServlet{
 
 	private void deleteLiveHouse(HttpServletRequest req, HttpServletResponse resp) {
 	
-		Integer id = Integer.parseInt(req.getParameter("liveHouseId"));
+		// O modal de exclusão envia o campo "id" (mesmo padrão de ShowsController)
+		Integer id = Integer.parseInt(req.getParameter("id"));
 		
 		LiveHouseDAO dao = DAOFactory.createDAO(LiveHouseDAO.class);
 		
@@ -201,4 +225,3 @@ public class LiveHouseController extends HttpServlet{
 			req.setAttribute("liveHouses", liveHouses);
 	}
 }
-
